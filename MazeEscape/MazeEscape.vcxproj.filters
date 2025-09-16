@@ -13,22 +13,37 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="몬스터 시리즈">
+      <UniqueIdentifier>{216a9961-fbae-41f4-82b3-1dccb6a21a22}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="적과 플레이어">
+      <UniqueIdentifier>{f3a8773a-a25e-4661-b9fc-204408468131}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MazeEscape.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="Actor.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="Player.cpp">
-      <Filter>소스 파일</Filter>
+      <Filter>적과 플레이어</Filter>
     </ClCompile>
     <ClCompile Include="Monster.cpp">
-      <Filter>소스 파일</Filter>
+      <Filter>적과 플레이어</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>적과 플레이어</Filter>
     </ClCompile>
     <ClCompile Include="Test.cpp">
-      <Filter>소스 파일</Filter>
+      <Filter>적과 플레이어</Filter>
+    </ClCompile>
+    <ClCompile Include="Goblin.cpp">
+      <Filter>몬스터 시리즈</Filter>
+    </ClCompile>
+    <ClCompile Include="Orc.cpp">
+      <Filter>몬스터 시리즈</Filter>
+    </ClCompile>
+    <ClCompile Include="Zombie.cpp">
+      <Filter>몬스터 시리즈</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -45,16 +60,25 @@
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="Actor.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Player.h">
-      <Filter>헤더 파일</Filter>
+      <Filter>적과 플레이어</Filter>
     </ClInclude>
     <ClInclude Include="Monster.h">
-      <Filter>헤더 파일</Filter>
+      <Filter>적과 플레이어</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>적과 플레이어</Filter>
     </ClInclude>
     <ClInclude Include="Test.h">
-      <Filter>헤더 파일</Filter>
+      <Filter>적과 플레이어</Filter>
+    </ClInclude>
+    <ClInclude Include="Orc.h">
+      <Filter>몬스터 시리즈</Filter>
+    </ClInclude>
+    <ClInclude Include="Zombie.h">
+      <Filter>몬스터 시리즈</Filter>
+    </ClInclude>
+    <ClInclude Include="Goblin.h">
+      <Filter>몬스터 시리즈</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
