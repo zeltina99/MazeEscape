@@ -33,9 +33,6 @@
     <ClCompile Include="Player.cpp">
       <Filter>적과 플레이어</Filter>
     </ClCompile>
-    <ClCompile Include="Test.cpp">
-      <Filter>적과 플레이어</Filter>
-    </ClCompile>
     <ClCompile Include="Goblin.cpp">
       <Filter>몬스터 시리즈</Filter>
     </ClCompile>
@@ -66,9 +63,6 @@
       <Filter>적과 플레이어</Filter>
     </ClInclude>
     <ClInclude Include="Player.h">
-      <Filter>적과 플레이어</Filter>
-    </ClInclude>
-    <ClInclude Include="Test.h">
       <Filter>적과 플레이어</Filter>
     </ClInclude>
     <ClInclude Include="Orc.h">

@@ -1,7 +1,7 @@
 #pragma once
 #include <string>
 #include "Position.h"
-#include "PlayerData.h"
+//#include "PlayerData.h"
 
 enum MazeTile
 {
@@ -23,6 +23,7 @@ enum MoveDirection
 void InitializeMaze();
 void MazeEscapeRun();
 void ClearMaze();
+void SpawnRandomEnemy(int& Enemy);
 
 bool ReadMapFile(const char* MapFileName, std::string& OutDataString);
 bool ParseMapData(std::string& DataString);
@@ -38,6 +39,20 @@ bool IsWall(int X, int Y);
 bool IsEnd(Position& position);
 MoveDirection GetMoveInput(int MoveFlags);
 
-void MoveEventProcess(PlayerData& Player);
-void BattleEvent(PlayerData& Player);
-void HealerEvent(PlayerData& Player);
+//void MoveEventProcess(PlayerData& Player);
+//void BattleEvent(PlayerData& Player);
+//void HealerEvent(PlayerData& Player);
+
+class MazeEscape
+{
+public:
+    MazeEscape() = default;
+
+    void BattelEvent();
+    void HealerEvent();
+    void MoveEventProcess();
+    void MazeEscapeRun();
+
+private:
+
+};

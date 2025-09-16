@@ -2,29 +2,29 @@
 
 struct Position
 {
-	int x;
-	int y;
+	int X;
+	int Y;
 
-	Position() : x(0), y(0) {}
-	Position(int InX, int InY) : x(InX), y(InY) {}
+	Position() : X(0), Y(0) {}
+	Position(int InX, int InY) : X(InX), Y(InY) {}
 
 	Position operator+(const Position& Other) const
 	{
-		return Position(x + Other.x, y + Other.y);
+		return Position(X + Other.X, Y + Other.Y);
 	}
 
 	Position operator-(const Position& Other) const
 	{
-		return Position(x - Other.x, y - Other.y);
+		return Position(X - Other.X, Y - Other.Y);
 	}
 
 	bool operator==(const Position& Other) const
 	{
-		return x == Other.x && y == Other.y;
+		return X == Other.X && Y == Other.Y;
 	}
 
 	bool operator!=(const Position& Other) const
 	{
 		return !(*this == Other);
-	}	
+	}
 };
