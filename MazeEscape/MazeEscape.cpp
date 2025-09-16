@@ -275,7 +275,7 @@ int PrintAvailableMoves(Position& position)
 {
 	int MoveFlags = DirNone;
 
-	printf("Select movable direction (w:Up a:Left s:Down d:Right):\n");
+	printf("이동할 수 있는 방향을 선택하세요 (w:위 a:왼쪽 s:아래쪽 d:오른쪽) : \n");
 	if (!IsWall(position.x, position.y - 1))
 	{
 		printf("W(↑) ");
@@ -323,7 +323,7 @@ MoveDirection GetMoveInput(int MoveFlags)
 
 	while (true)
 	{
-		printf("Input direction : ");
+		printf("방향을 입력하세요 : ");
 		std::cin >> InputChar;
 
 		if ((InputChar == 'w' || InputChar == 'W')
@@ -351,7 +351,7 @@ MoveDirection GetMoveInput(int MoveFlags)
 			break;
 		}
 
-		printf("Wrong input. Select movable direction.\n");
+		printf("잘못된 입력입니다. 이동할 수 있는 방향 중에서 선택하세요.\n");
 	}
 
 	return Direction;
@@ -363,63 +363,71 @@ void MoveEventProcess(PlayerData& Player)
 	//printf("Random Value = %.2f\n", RandomValue);
 	if (RandomValue < 0.2f)
 	{
-		printf("An enemy appeared! You fought bravely and defeated it!\n");
+		printf("적을 발견했습니다. 플레이어는 용감하게 싸웠다.\n");
 		BattleEvent(Player);
 	}
 	else if (RandomValue < 0.4f)
 	{
-		printf("You found a Healer!\n");
+		printf("힐러를 찾았습니다!\n");
 		HealerEvent(Player);
 	}
 	else
 	{
-		printf("Nothing happened.\n");
+		printf("아무일도 안 일어났습니다.\n");
 	}
 }
 
 void BattleEvent(PlayerData& Player)
 {
     EnemyData Enemy;
-    printf("Battle Start!\n");
+    printf("전투 시작!\n");
     while (Player.Health > 0 && Enemy.Health > 0)
     {
         // APlayer attacks Enemy
         Enemy.Health -= Player.AttackPower;
-        printf("Player attacks! Enemy Health: %.1f\n", Enemy.Health);
+        printf("플레이어의 공격! 적의 체력 : %.1f\n", Enemy.Health);
         if (Enemy.Health <= 0)
         {
-            printf("Enemy defeated!\n");
-			printf("You gained %d gold.\n", Enemy.DropGold);
+            printf("적이 패배했다!\n");
+			printf("플레이어는 %d 골드를 얻었다.\n", Enemy.DropGold);
 			Player.Gold += Enemy.DropGold;
             break;
         }
 
         // Enemy attacks APlayer
         Player.Health -= Enemy.AttackPower;
-        printf("Enemy attacks! Player Health: %.1f\n", Player.Health);
+        printf("적의 공격! 플레이어의 체력: %.1f\n", Player.Health);
         if (Player.Health <= 0)
         {
-            printf("Player defeated!\n");
+            printf("플레이어는 패배했습니다.\n");
         }
     }
 }
 
 void HealerEvent(PlayerData& Player)
 {
-    printf("Healer: How much gold will you pay for healing?\n(Current Health: %.1f, Current Gold: %d)\n", Player.Health, Player.Gold);
+    printf("힐러: 얼마의 골드를 지불해서 힐을 받을래?\n(현재 체력: %.1f, 현재 골드: %d)\n", Player.Health, Player.Gold);
     int payGold = -1;
 	while (payGold < 0 || payGold > Player.Gold)
     {
-        printf("Enter gold to pay: ");
-        std::cin >> payGold;
-        if (payGold <= 0)
-        {
-            printf("Don’t you want a heal? OK.\n");
-        }
-        if (payGold > Player.Gold)
-        {
-            printf("You don't have enough gold.\n");
-        }
+		if (std::cin.fail())
+		{
+			std::cin.clear(); // 에러 상태 초기화
+			std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // 버퍼 비우기
+			printf("숫자를 입력해야 합니다. 다시 시도하세요.\n");
+			continue;
+		}
+		      if (payGold <= 0)
+		      {
+		          printf("넌 힐을 원하지 않는거지? 알았어. \n");
+			break;
+		      }
+		      if (payGold > Player.Gold)
+		      {
+		          printf("넌 충분한 골드가 지금 없어.\n");
+			continue;
+		      }
+		break;
     }
 	if (payGold > 0)
 	{
@@ -431,5 +439,5 @@ void HealerEvent(PlayerData& Player)
 		Player.Gold -= payGold;
 		printf("Healed!");
 	}
-	printf("Current Health: %.1f, Remaining Gold: %d\n", Player.Health, Player.Gold);
+	printf("현재 체력: %.1f, 남아있는 골드: %d\n", Player.Health, Player.Gold);
 }
