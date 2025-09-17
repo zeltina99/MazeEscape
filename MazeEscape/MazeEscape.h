@@ -3,7 +3,7 @@
 #include "Position.h"
 #include "PlayerData.h"
 
-enum MazeTile
+enum class MazeTile : int
 {
     Path = 0,
     Wall = 1,
@@ -11,7 +11,7 @@ enum MazeTile
     End = 3
 };
 
-enum MoveDirection
+enum class MoveDirection : int
 {
     DirNone = 0,
     DirUp = 1 << 0,
@@ -41,3 +41,24 @@ MoveDirection GetMoveInput(int MoveFlags);
 void MoveEventProcess(PlayerData& Player);
 void BattleEvent(PlayerData& Player);
 void HealerEvent(PlayerData& Player);
+
+inline MoveDirection operator&(int Left, MoveDirection Right)
+{
+    return static_cast<MoveDirection>((Left) & static_cast<int>(Right));
+}
+
+inline bool operator&&(bool Left, MoveDirection Right)
+{
+    return static_cast<bool>((Left) && static_cast<int>(Right));
+}
+
+inline int& operator|=(int& Left, MoveDirection Right)
+{
+    Left = Left | static_cast<int>(Right);
+    return Left;
+}
+
+inline bool operator==(int Left, MazeTile Right)
+{
+    return static_cast<bool>((Left) == static_cast<int>(Right));
+}

@@ -1,5 +1,5 @@
 ﻿#define _CRT_SECURE_NO_WARNINGS
-#define TEST_MODE
+//#define TEST_MODE
 
 #include <iostream>
 #include <fstream>
@@ -28,6 +28,21 @@ const char* DirectoryName = ".\\Data\\";
 int MazeWidth = 20;
 int MazeHeight = 10;
 int** Maze = nullptr;
+
+
+/*
+		① 미로 탈출 게임 수정하기
+			- Actor 클래스에 ICanBattle 인터페이스를 추가하기
+			 - 전투를 할 수 있다는 것을 나타내는 인터페이스
+			  - 주요 함수
+				- ApplyDamage(ICanBattle* InTarget);
+				- TakeDamage(float InDamage);
+			  - 전투 코드 수정
+			- enum을 모두 enum class로 변경하기
+			- Monster가 공격을 할 때 각 몬스터별로 다른 방식으로 공격하기
+
+			- 전투 시작 시 랜덤한 몬스터가 등장
+*/
 
 void InitializeMaze()
 {
@@ -58,19 +73,19 @@ void MazeEscapeRun()
 		MoveDirection Direction = GetMoveInput(MoveFlags);
 		switch (Direction)
 		{
-		case DirUp:
+		case MoveDirection::DirUp:
 			Player.CurrentPosition.y--;
 			break;
-		case DirDown:
+		case MoveDirection::DirDown:
 			Player.CurrentPosition.y++;
 			break;
-		case DirLeft:
+		case MoveDirection::DirLeft:
 			Player.CurrentPosition.x--;
 			break;
-		case DirRight:
+		case MoveDirection::DirRight:
 			Player.CurrentPosition.x++;
 			break;
-		case DirNone:
+		case MoveDirection::DirNone:
 		default:
 			// Critical Error
 			break;
@@ -228,19 +243,19 @@ void PrintMaze(Position& position)
 			{
 				printf("P ");
 			}
-			else if (Maze[y][x] == Wall)
+			else if (Maze[y][x] == MazeTile::Wall)
 			{
 				printf("# ");
 			}
-			else if (Maze[y][x] == Path)
+			else if (Maze[y][x] == MazeTile::Path)
 			{
 				printf(". ");
 			}
-			else if (Maze[y][x] == Start)
+			else if (Maze[y][x] == MazeTile::Start)
 			{
 				printf("S ");
 			}
-			else if (Maze[y][x] == End)
+			else if (Maze[y][x] == MazeTile::End)
 			{
 				printf("E ");
 			}
@@ -259,7 +274,7 @@ void FindStartPosition(Position& OutPosition)
 	{
 		for (int x = 0; x < MazeWidth; x++)
 		{
-			if (Maze[y][x] == Start)
+			if (Maze[y][x] == MazeTile::Start)
 			{
 				OutPosition.x = x;
 				OutPosition.y = y;
@@ -273,28 +288,28 @@ void FindStartPosition(Position& OutPosition)
 
 int PrintAvailableMoves(Position& position)
 {
-	int MoveFlags = DirNone;
+	int MoveFlags = static_cast<int>(MoveDirection::DirNone);
 
 	printf("이동할 수 있는 방향을 선택하세요 (w:위 a:왼쪽 s:아래쪽 d:오른쪽) : \n");
 	if (!IsWall(position.x, position.y - 1))
 	{
 		printf("W(↑) ");
-		MoveFlags |= DirUp;
+		MoveFlags |= MoveDirection::DirUp;
 	}
 	if (!IsWall(position.x, position.y + 1))
 	{
 		printf("S(↓) ");
-		MoveFlags |= DirDown;
+		MoveFlags |= MoveDirection::DirDown;
 	}
 	if (!IsWall(position.x - 1, position.y))
 	{
 		printf("A(←) ");
-		MoveFlags |= DirLeft;
+		MoveFlags |= MoveDirection::DirLeft;
 	}
 	if (!IsWall(position.x + 1, position.y))
 	{
 		printf("D(→) ");
-		MoveFlags |= DirRight;
+		MoveFlags |= MoveDirection::DirRight;
 	}
 	printf("\n");
 
@@ -306,20 +321,20 @@ bool IsWall(int X, int Y)
 	bool isWall = false;
 	if (Y < 0 || Y >= MazeHeight ||
 		X < 0 || X >= MazeWidth ||
-		Maze[Y][X] == Wall)
+		Maze[Y][X] == MazeTile::Wall)
 		isWall = true;
 	return isWall;
 }
 
 bool IsEnd(Position& position)
 {
-	return Maze[position.y][position.x] == End;
+	return Maze[position.y][position.x] == MazeTile::End;
 }
 
 MoveDirection GetMoveInput(int MoveFlags)
 {
 	char InputChar = 0;
-	MoveDirection Direction = DirNone;
+	MoveDirection Direction = MoveDirection::DirNone;
 
 	while (true)
 	{
@@ -327,27 +342,27 @@ MoveDirection GetMoveInput(int MoveFlags)
 		std::cin >> InputChar;
 
 		if ((InputChar == 'w' || InputChar == 'W')
-			&& (MoveFlags & DirUp) /*!= 0*/)
+			&& (MoveFlags & MoveDirection::DirUp) /*!= 0*/)
 		{
-			Direction = DirUp;
+			Direction = MoveDirection::DirUp;
 			break;
 		}
 		if ((InputChar == 's' || InputChar == 'S')
-			&& (MoveFlags & DirDown) /*!= 0*/)
+			&& (MoveFlags & MoveDirection::DirDown) /*!= 0*/)
 		{
-			Direction = DirDown;
+			Direction = MoveDirection::DirDown;
 			break;
 		}
 		if ((InputChar == 'a' || InputChar == 'A')
-			&& (MoveFlags & DirLeft) /*!= 0*/)
+			&& (MoveFlags & MoveDirection::DirLeft) /*!= 0*/)
 		{
-			Direction = DirLeft;
+			Direction = MoveDirection::DirLeft;
 			break;
 		}
 		if ((InputChar == 'd' || InputChar == 'D')
-			&& (MoveFlags & DirRight) /*!= 0*/)
+			&& (MoveFlags & MoveDirection::DirRight) /*!= 0*/)
 		{
-			Direction = DirRight;
+			Direction = MoveDirection::DirRight;
 			break;
 		}
 
@@ -408,14 +423,13 @@ void HealerEvent(PlayerData& Player)
 {
     printf("힐러: 얼마의 골드를 지불해서 힐을 받을래?\n(현재 체력: %.1f, 현재 골드: %d)\n", Player.Health, Player.Gold);
     int payGold = -1;
-	while (payGold < 0 || payGold > Player.Gold)
+	while (true)
     {
 		if (std::cin.fail())
 		{
 			std::cin.clear(); // 에러 상태 초기화
 			std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // 버퍼 비우기
 			printf("숫자를 입력해야 합니다. 다시 시도하세요.\n");
-			continue;
 		}
 		      if (payGold <= 0)
 		      {

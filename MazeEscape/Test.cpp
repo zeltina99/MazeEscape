@@ -10,13 +10,13 @@ void Test::TestBattle()
 
 	while (Player->IsAlive() && Enemy->IsAlive())
 	{
-		Player->Attack(Enemy);
+		Player->ApplyDamage(Enemy);
 		if (!Enemy->IsAlive())
 		{
 			// 캐스팅해서 돈 주기			
 			break;
 		}
-		Enemy->Attack(Player);
+		Enemy->ApplyDamage(Player);
 	}
 
 	delete Enemy;

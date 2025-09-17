@@ -1,6 +1,7 @@
 #include "Actor.h"
+#include "ICanBattle.h"
 
-void Actor::Attack(Actor* InTarget)
+void Actor::ApplyDamage(ICanBattle* InTarget)
 {
 	// AttackPower * 속성 * 버프효과 .....
 	InTarget->TakeDamage(AttackPower); // AttackPower만큼 데미지 주기

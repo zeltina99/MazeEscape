@@ -1,6 +1,7 @@
 #pragma once
+#include "ICanBattle.h"
 #include <string>
-class Actor
+class Actor : public ICanBattle
 {
 public:
 	Actor() = default;
@@ -13,7 +14,7 @@ public:
 	/// Target에게 공격하는 함수
 	/// </summary>
 	/// <param name="InTarget">공격 받는 대상</param>
-	void Attack(Actor* InTarget);
+	void ApplyDamage(ICanBattle* InTarget);
 
 	/// <summary>
 	/// 지정된 피해량만큼 본인에게 피해를 적용
