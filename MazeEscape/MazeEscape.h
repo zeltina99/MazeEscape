@@ -62,3 +62,17 @@ inline bool operator==(int Left, MazeTile Right)
 {
     return static_cast<bool>((Left) == static_cast<int>(Right));
 }
+
+class MazeEscape
+{
+public:
+    MazeEscape() = default;
+
+    void BattelEvent();
+    void HealerEvent();
+    void MoveEventProcess();
+    void MazeEscapeRun();
+
+private:
+
+};

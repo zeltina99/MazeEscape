@@ -455,3 +455,19 @@ void HealerEvent(PlayerData& Player)
 	}
 	printf("현재 체력: %.1f, 남아있는 골드: %d\n", Player.Health, Player.Gold);
 }
+
+void MazeEscape::BattelEvent()
+{
+}
+
+void MazeEscape::HealerEvent()
+{
+}
+
+void MazeEscape::MoveEventProcess()
+{
+}
+
+void MazeEscape::MazeEscapeRun()
+{
+}
