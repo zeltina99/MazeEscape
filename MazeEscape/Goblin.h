@@ -11,15 +11,17 @@ public:
 	/// Target에게 공격하는 함수
 	/// </summary>
 	/// <param name="InTarget">공격 받는 대상</param>
-	void ApplyDamage(ICanBattle* InTarget);
+	virtual void ApplyDamage(ICanBattle* InTarget) override;
 
 	/// <summary>
 	/// 지정된 피해량만큼 본인에게 피해를 적용
 	/// </summary>
 	/// <param name="InDamage">적용할 피해량</param>
-	void TakeDamage(float InDamage);
+	virtual void TakeDamage(float InDamage) override;
 
 	inline int GetDropGold() const { return DropGold; }
+
+	virtual ~Goblin() {};
 
 protected:
 	int DropGold = 10;

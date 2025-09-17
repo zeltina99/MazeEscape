@@ -7,6 +7,10 @@
 #include "PlayerData.h"
 #include "EnemyData.h"
 #include "Test.h"
+#include "Player.h"
+#include "Monster.h"
+#include "Goblin.h"
+#include "Orc.h"
 
 int main()
 {
@@ -28,6 +32,9 @@ const char* DirectoryName = ".\\Data\\";
 int MazeWidth = 20;
 int MazeHeight = 10;
 int** Maze = nullptr;
+
+
+
 
 
 /*
@@ -392,57 +399,120 @@ void MoveEventProcess(PlayerData& Player)
 	}
 }
 
-void BattleEvent(PlayerData& Player)
+//void BattleEvent(PlayerData& Player)
+//{
+//    EnemyData Enemy;
+//    printf("전투 시작!\n");
+//    while (Player.Health > 0 && Enemy.Health > 0)
+//    {
+//        // APlayer attacks Enemy
+//        Enemy.Health -= Player.AttackPower;
+//        printf("플레이어의 공격! 적의 체력 : %.1f\n", Enemy.Health);
+//        if (Enemy.Health <= 0)
+//        {
+//            printf("적이 패배했다!\n");
+//			printf("플레이어는 %d 골드를 얻었다.\n", Enemy.DropGold);
+//			Player.Gold += Enemy.DropGold;
+//            break;
+//        }
+//
+//        // Enemy attacks APlayer
+//        Player.Health -= Enemy.AttackPower;
+//        printf("적의 공격! 플레이어의 체력: %.1f\n", Player.Health);
+//        if (Player.Health <= 0)
+//        {
+//            printf("플레이어는 패배했습니다.\n");
+//        }
+//    }
+//}
+
+//void HealerEvent(PlayerData& Player)
+//{
+//    printf("힐러: 얼마의 골드를 지불해서 힐을 받을래?\n(현재 체력: %.1f, 현재 골드: %d)\n", Player.Health, Player.Gold);
+//    int payGold = -1;
+//	while (true)
+//    {
+//		if (std::cin.fail())
+//		{
+//			std::cin.clear(); // 에러 상태 초기화
+//			std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // 버퍼 비우기
+//			printf("숫자를 입력해야 합니다. 다시 시도하세요.\n");
+//		}
+//		      if (payGold <= 0)
+//		      {
+//		          printf("넌 힐을 원하지 않는거지? 알았어. \n");
+//			break;
+//		      }
+//		      if (payGold > Player.Gold)
+//		      {
+//		          printf("넌 충분한 골드가 지금 없어.\n");
+//			continue;
+//		      }
+//		break;
+//    }
+//	if (payGold > 0)
+//	{
+//		float healAmount = static_cast<float>(payGold);
+//		float newHealth = Player.Health + healAmount;
+//		if (newHealth > Player.MaxHealth)
+//			newHealth = Player.MaxHealth;
+//		Player.Health = newHealth;
+//		Player.Gold -= payGold;
+//		printf("Healed!");
+//	}
+//	printf("현재 체력: %.1f, 남아있는 골드: %d\n", Player.Health, Player.Gold);
+//}
+
+void MazeEscape::BattelEvent()
 {
-    EnemyData Enemy;
-    printf("전투 시작!\n");
-    while (Player.Health > 0 && Enemy.Health > 0)
-    {
-        // APlayer attacks Enemy
-        Enemy.Health -= Player.AttackPower;
-        printf("플레이어의 공격! 적의 체력 : %.1f\n", Enemy.Health);
-        if (Enemy.Health <= 0)
-        {
-            printf("적이 패배했다!\n");
+	printf("전투 시작!\n");
+	while (Player.Health > 0 && Enemy.Health > 0)
+	{
+		// APlayer attacks Enemy
+		Enemy.Health -= Player.AttackPower;
+		printf("플레이어의 공격! 적의 체력 : %.1f\n", Enemy.Health);
+		if (Enemy.Health <= 0)
+		{
+			printf("적이 패배했다!\n");
 			printf("플레이어는 %d 골드를 얻었다.\n", Enemy.DropGold);
 			Player.Gold += Enemy.DropGold;
-            break;
-        }
+			break;
+		}
 
-        // Enemy attacks APlayer
-        Player.Health -= Enemy.AttackPower;
-        printf("적의 공격! 플레이어의 체력: %.1f\n", Player.Health);
-        if (Player.Health <= 0)
-        {
-            printf("플레이어는 패배했습니다.\n");
-        }
-    }
+		// Enemy attacks APlayer
+		Player.Health -= Enemy.AttackPower;
+		printf("적의 공격! 플레이어의 체력: %.1f\n", Player.Health);
+		if (Player.Health <= 0)
+		{
+			printf("플레이어는 패배했습니다.\n");
+		}
+	}
 }
 
-void HealerEvent(PlayerData& Player)
+void MazeEscape::HealerEvent()
 {
-    printf("힐러: 얼마의 골드를 지불해서 힐을 받을래?\n(현재 체력: %.1f, 현재 골드: %d)\n", Player.Health, Player.Gold);
-    int payGold = -1;
+	printf("힐러: 얼마의 골드를 지불해서 힐을 받을래?\n(현재 체력: %.1f, 현재 골드: %d)\n", Player.Health, Player.Gold);
+	int payGold = -1;
 	while (true)
-    {
+	{
 		if (std::cin.fail())
 		{
 			std::cin.clear(); // 에러 상태 초기화
 			std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // 버퍼 비우기
 			printf("숫자를 입력해야 합니다. 다시 시도하세요.\n");
 		}
-		      if (payGold <= 0)
-		      {
-		          printf("넌 힐을 원하지 않는거지? 알았어. \n");
+		if (payGold <= 0)
+		{
+			printf("넌 힐을 원하지 않는거지? 알았어. \n");
 			break;
-		      }
-		      if (payGold > Player.Gold)
-		      {
-		          printf("넌 충분한 골드가 지금 없어.\n");
+		}
+		if (payGold > Player.Gold)
+		{
+			printf("넌 충분한 골드가 지금 없어.\n");
 			continue;
-		      }
+		}
 		break;
-    }
+	}
 	if (payGold > 0)
 	{
 		float healAmount = static_cast<float>(payGold);
@@ -454,14 +524,6 @@ void HealerEvent(PlayerData& Player)
 		printf("Healed!");
 	}
 	printf("현재 체력: %.1f, 남아있는 골드: %d\n", Player.Health, Player.Gold);
-}
-
-void MazeEscape::BattelEvent()
-{
-}
-
-void MazeEscape::HealerEvent()
-{
 }
 
 void MazeEscape::MoveEventProcess()
