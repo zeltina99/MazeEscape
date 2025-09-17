@@ -1,6 +1,13 @@
 #include "Actor.h"
 #include "ICanBattle.h"
 
+void Actor::Heal(int Paygold)
+{
+	float healAmount = static_cast<float>(Paygold);
+	SetHealth(Health + healAmount);
+	printf("Healed!\n");
+}
+
 void Actor::ApplyDamage(ICanBattle* InTarget)
 {
 	// AttackPower * 속성 * 버프효과 .....

@@ -31,6 +31,8 @@ int FindCharIndex(const char* TargetString, const char TargetCharacter);
 char* GetLine(char** InOutSource);
 void ParseLineData(const char* LineData, int ArraySize, int* OutArray);
 
+void GetSpawnMonter(int SpawnMonster);
+
 void PrintMaze(Position& position);
 void FindStartPosition(Position& OutPosition);
 int PrintAvailableMoves(Position& position);
@@ -38,9 +40,9 @@ bool IsWall(int X, int Y);
 bool IsEnd(Position& position);
 MoveDirection GetMoveInput(int MoveFlags);
 
-void MoveEventProcess(PlayerData& Player);
-void BattleEvent(PlayerData& Player);
-void HealerEvent(PlayerData& Player);
+//void MoveEventProcess(PlayerData& Player);
+//void BattleEvent(PlayerData& Player);
+//void HealerEvent(PlayerData& Player);
 
 inline MoveDirection operator&(int Left, MoveDirection Right)
 {

@@ -11,19 +11,27 @@
 #include "Monster.h"
 #include "Goblin.h"
 #include "Orc.h"
+#include "ICanBattle.h"
+#include <time.h>
 
 int main()
 {
+	
+
 #ifdef TEST_MODE
 	Test test;
 	test.TestBattle();
 #endif // TEST_MODE
 
 #ifndef TEST_MODE
+	srand(time(0));
 	InitializeMaze();	// 미로 초기화(파일에서 불러오기)
-	MazeEscapeRun();	// 게임 시작
+	MazeEscape day0917;
+	day0917.MazeEscapeRun();	// 게임 시작
 	ClearMaze();		// 미로 초기화하면서 동적할당 했던 메모리 정리
 #endif // !TEST_MODE    
+	
+
 
     return 0;
 }
@@ -61,58 +69,58 @@ void InitializeMaze()
 	ParseMapData(Data);
 }
 
-void MazeEscapeRun()
-{
-	PlayerData Player;
-
-	FindStartPosition(Player.CurrentPosition);
-
-	printf("~~ Maze Escape ~~\n");
-
-	while (Player.Health > 0)
-	{
-		PrintMaze(Player.CurrentPosition);
-
-		if (IsEnd(Player.CurrentPosition))
-		{
-			printf("Congratulations! You have escaped the maze!\n");
-			break;
-		}
-
-		int MoveFlags = PrintAvailableMoves(Player.CurrentPosition);
-		MoveDirection Direction = GetMoveInput(MoveFlags);
-		switch (Direction)
-		{
-		case MoveDirection::DirUp:
-			Player.CurrentPosition.y--;
-			break;
-		case MoveDirection::DirDown:
-			Player.CurrentPosition.y++;
-			break;
-		case MoveDirection::DirLeft:
-			Player.CurrentPosition.x--;
-			break;
-		case MoveDirection::DirRight:
-			Player.CurrentPosition.x++;
-			break;
-		case MoveDirection::DirNone:
-		default:
-			// Critical Error
-			break;
-		}
-
-		MoveEventProcess(Player);
-	}
-
-	if (Player.Health >= 0)
-	{
-		// 게임 클리어!
-	}
-	else
-	{
-		// 게임 오버
-	}
-}
+//void MazeEscapeRun()
+//{
+//	PlayerData Player;
+//
+//	FindStartPosition(Player.CurrentPosition);
+//
+//	printf("~~ 미로 탈출 게임 ~~\n");
+//
+//	while (Player.Health > 0)
+//	{
+//		PrintMaze(Player.CurrentPosition);
+//
+//		if (IsEnd(Player.CurrentPosition))
+//		{
+//			printf("축하합니다! 미로를 탈출했습니다!\n");
+//			break;
+//		}
+//
+//		int MoveFlags = PrintAvailableMoves(Player.CurrentPosition);
+//		MoveDirection Direction = GetMoveInput(MoveFlags);
+//		switch (Direction)
+//		{
+//		case MoveDirection::DirUp:
+//			Player.CurrentPosition.y--;
+//			break;
+//		case MoveDirection::DirDown:
+//			Player.CurrentPosition.y++;
+//			break;
+//		case MoveDirection::DirLeft:
+//			Player.CurrentPosition.x--;
+//			break;
+//		case MoveDirection::DirRight:
+//			Player.CurrentPosition.x++;
+//			break;
+//		case MoveDirection::DirNone:
+//		default:
+//			// Critical Error
+//			break;
+//		}
+//
+//		MoveEventProcess(Player);
+//	}
+//
+//	if (Player.Health >= 0)
+//	{
+//		// 게임 클리어!
+//	}
+//	else
+//	{
+//		// 게임 오버
+//	}
+//}
 
 void ClearMaze()
 {
@@ -241,6 +249,95 @@ void ParseLineData(const char* LineData, int ArraySize, int* OutArray)
 		if (*LinePointer < '0' || *LinePointer > '9')
 			LinePointer++;
 	}
+}
+
+void GetSpawnMonter(int SpawnMonster)
+{
+	switch(SpawnMonster)
+	{
+	case 1:
+	{
+		printf("전투 시작!\n");
+		while (player.GetHealth() > 0 && enemy.GetHealth() > 0)
+		{
+			// APlayer attacks Enemy
+			player.ApplyDamage(&enemy);
+			printf("플레이어의 공격! 적의 체력 : %.1f\n", enemy.GetHealth());
+			if (enemy.GetHealth() <= 0)
+			{
+				printf("적이 패배했다!\n");
+				printf("플레이어는 %d 골드를 얻었다.\n", enemy.GetDropGold());
+				player.AddGold(enemy.GetDropGold());
+				break;
+			}
+
+			// Enemy attacks APlayer
+			enemy.ApplyDamage(&player);
+			printf("적의 공격! 플레이어의 체력: %.1f\n", player.GetHealth());
+			if (player.GetHealth() <= 0)
+			{
+				printf("플레이어는 패배했습니다.\n");
+			}
+		}
+	}
+	break;
+	case 2:
+	{
+		printf("전투 시작!\n");
+		while (player.GetHealth() > 0 && orc.GetHealth() > 0)
+		{
+			// APlayer attacks Enemy
+			player.ApplyDamage(&orc);
+			printf("플레이어의 공격! 오크의 체력 : %.1f\n", orc.GetHealth());
+			if (orc.GetHealth() <= 0)
+			{
+				printf("적이 패배했다!\n");
+				printf("플레이어는 %d 골드를 얻었다.\n", orc.GetDropGold());
+				player.AddGold(orc.GetDropGold());
+				break;
+			}
+
+			// Enemy attacks APlayer
+			orc.ApplyDamage(&player);
+			printf("오크의 공격! 플레이어의 체력: %.1f\n", player.GetHealth());
+			if (player.GetHealth() <= 0)
+			{
+				printf("플레이어는 패배했습니다.\n");
+			}
+		}
+	}
+	break;
+	case 3:
+	{
+		printf("전투 시작!\n");
+		while (player.GetHealth() > 0 && goblin.GetHealth() > 0)
+		{
+			// APlayer attacks Enemy
+			player.ApplyDamage(&goblin);
+			printf("플레이어의 공격! 고블린의 체력 : %.1f\n", goblin.GetHealth());
+			if (goblin.GetHealth() <= 0)
+			{
+				printf("고블린이 패배했다!\n");
+				printf("플레이어는 %d 골드를 얻었다.\n", goblin.GetDropGold());
+				player.AddGold(goblin.GetDropGold());
+				break;
+			}
+
+			// Enemy attacks APlayer
+			goblin.ApplyDamage(&player);
+			printf("고블린의 공격! 플레이어의 체력: %.1f\n", player.GetHealth());
+			if (player.GetHealth() <= 0)
+			{
+				printf("플레이어는 패배했습니다.\n");
+			}
+		}
+	}
+	break;
+	default:
+		// ERROR!!!
+		break;
+	}
+	
 }
 
 void PrintMaze(Position& position)
@@ -382,25 +479,25 @@ MoveDirection GetMoveInput(int MoveFlags)
 	return Direction;
 }
 
-void MoveEventProcess(PlayerData& Player)
-{
-	float RandomValue = static_cast<float>(rand()) / static_cast<float>(RAND_MAX); // 0.0f ~ 1.0f
-	//printf("Random Value = %.2f\n", RandomValue);
-	if (RandomValue < 0.2f)
-	{
-		printf("적을 발견했습니다. 플레이어는 용감하게 싸웠다.\n");
-		BattleEvent(Player);
-	}
-	else if (RandomValue < 0.4f)
-	{
-		printf("힐러를 찾았습니다!\n");
-		HealerEvent(Player);
-	}
-	else
-	{
-		printf("아무일도 안 일어났습니다.\n");
-	}
-}
+//void MoveEventProcess(PlayerData& Player)
+//{
+//	float RandomValue = static_cast<float>(rand()) / static_cast<float>(RAND_MAX); // 0.0f ~ 1.0f
+//	//printf("Random Value = %.2f\n", RandomValue);
+//	if (RandomValue < 0.2f)
+//	{
+//		printf("적을 발견했습니다. 플레이어는 용감하게 싸웠다.\n");
+//		BattleEvent(Player);
+//	}
+//	else if (RandomValue < 0.4f)
+//	{
+//		printf("힐러를 찾았습니다!\n");
+//		HealerEvent(Player);
+//	}
+//	else
+//	{
+//		printf("아무일도 안 일어났습니다.\n");
+//	}
+//}
 
 //void BattleEvent(PlayerData& Player)
 //{
@@ -468,36 +565,17 @@ void MoveEventProcess(PlayerData& Player)
 
 void MazeEscape::BattelEvent()
 {
-	printf("전투 시작!\n");
-	while (Player.Health > 0 && Enemy.Health > 0)
-	{
-		// APlayer attacks Enemy
-		Enemy.Health -= Player.AttackPower;
-		printf("플레이어의 공격! 적의 체력 : %.1f\n", Enemy.Health);
-		if (Enemy.Health <= 0)
-		{
-			printf("적이 패배했다!\n");
-			printf("플레이어는 %d 골드를 얻었다.\n", Enemy.DropGold);
-			Player.Gold += Enemy.DropGold;
-			break;
-		}
-
-		// Enemy attacks APlayer
-		Player.Health -= Enemy.AttackPower;
-		printf("적의 공격! 플레이어의 체력: %.1f\n", Player.Health);
-		if (Player.Health <= 0)
-		{
-			printf("플레이어는 패배했습니다.\n");
-		}
-	}
+	int RandomMonster = (rand() % 3) + 1;
+	GetSpawnMonter(RandomMonster);
 }
 
 void MazeEscape::HealerEvent()
 {
-	printf("힐러: 얼마의 골드를 지불해서 힐을 받을래?\n(현재 체력: %.1f, 현재 골드: %d)\n", Player.Health, Player.Gold);
+	printf("힐러: 얼마의 골드를 지불해서 힐을 받을래?\n(현재 체력: %.1f, 현재 골드: %d)\n", player.GetHealth(), player.GetGold());
 	int payGold = -1;
 	while (true)
 	{
+		std::cin >> payGold;
 		if (std::cin.fail())
 		{
 			std::cin.clear(); // 에러 상태 초기화
@@ -509,7 +587,7 @@ void MazeEscape::HealerEvent()
 			printf("넌 힐을 원하지 않는거지? 알았어. \n");
 			break;
 		}
-		if (payGold > Player.Gold)
+		if (payGold > player.GetGold())
 		{
 			printf("넌 충분한 골드가 지금 없어.\n");
 			continue;
@@ -518,21 +596,79 @@ void MazeEscape::HealerEvent()
 	}
 	if (payGold > 0)
 	{
-		float healAmount = static_cast<float>(payGold);
-		float newHealth = Player.Health + healAmount;
-		if (newHealth > Player.MaxHealth)
-			newHealth = Player.MaxHealth;
-		Player.Health = newHealth;
-		Player.Gold -= payGold;
-		printf("Healed!");
+		player.Heal(payGold);
+		player.PayGold(payGold);
 	}
-	printf("현재 체력: %.1f, 남아있는 골드: %d\n", Player.Health, Player.Gold);
+	printf("현재 체력: %.1f, 남아있는 골드: %d\n", player.GetHealth(), player.GetGold());
 }
 
 void MazeEscape::MoveEventProcess()
 {
+	float RandomValue = static_cast<float>(rand()) / static_cast<float>(RAND_MAX); // 0.0f ~ 1.0f
+	//printf("Random Value = %.2f\n", RandomValue);
+	if (RandomValue < 0.2f)
+	{
+		printf("적을 발견했습니다. 플레이어는 용감하게 싸웠다.\n");
+		MazeEscape::BattelEvent();
+	}
+	else if (RandomValue < 0.4f)
+	{
+		printf("힐러를 찾았습니다!\n");
+		MazeEscape::HealerEvent();
+	}
+	else
+	{
+		printf("아무일도 안 일어났습니다.\n");
+	}
 }
 
 void MazeEscape::MazeEscapeRun()
 {
+	FindStartPosition(player.CurrentPosition);
+
+	printf("~~ 미로 탈출 게임 ~~\n");
+
+	while (player.GetHealth() > 0)
+	{
+		PrintMaze(player.CurrentPosition);
+
+		if (IsEnd(player.CurrentPosition))
+		{
+			printf("축하합니다! 미로를 탈출했습니다!\n");
+			break;
+		}
+
+		int MoveFlags = PrintAvailableMoves(player.CurrentPosition);
+		MoveDirection Direction = GetMoveInput(MoveFlags);
+		switch (Direction)
+		{
+		case MoveDirection::DirUp:
+			player.CurrentPosition.y--;
+			break;
+		case MoveDirection::DirDown:
+			player.CurrentPosition.y++;
+			break;
+		case MoveDirection::DirLeft:
+			player.CurrentPosition.x--;
+			break;
+		case MoveDirection::DirRight:
+			player.CurrentPosition.x++;
+			break;
+		case MoveDirection::DirNone:
+		default:
+			// Critical Error
+			break;
+		}
+
+		MoveEventProcess();
+	}
+
+	if (player.GetHealth() >= 0)
+	{
+		// 게임 클리어!
+	}
+	else
+	{
+		// 게임 오버
+	}
 }

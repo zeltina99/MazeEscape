@@ -10,6 +10,11 @@ public:
 	{
 	}
 
+	inline const float GetHealth() const { return Health; }
+	inline const float GetAttackPower() const { return AttackPower; }
+
+	void Heal(int Paygold);
+
 	/// <summary>
 	/// Target에게 공격하는 함수
 	/// </summary>
@@ -27,6 +32,8 @@ public:
 	/// </summary>
 	/// <returns>true면 살아있다. false면 죽었다.</returns>
 	inline bool IsAlive() { return Health > 0; }
+
+
 
 protected:
 	inline void SetHealth(float InHealth)
