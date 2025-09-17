@@ -33,7 +33,10 @@ int MazeWidth = 20;
 int MazeHeight = 10;
 int** Maze = nullptr;
 
-
+Monster enemy = Monster("적");
+Goblin goblin = Goblin("고블린");
+Orc orc = Orc("오크");
+APlayer player = APlayer("플레이어");
 
 
 
