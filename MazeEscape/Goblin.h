@@ -1,12 +1,11 @@
 #pragma once
 #include "Actor.h"
-#include "ICanBattle.h"
-class Monster : public Actor, public ICanBattle
+class Goblin : public Actor, public ICanBattle
 {
 public:
-	Monster() :Actor("몬스터", 30.0f, 5.0f) 	{ }
-	Monster(const char* InName) :Actor(InName, 30.0f, 5.0f)	{ }
-	Monster(const char* InName, float InHealth, float InAttackPower) : Actor(InName, InHealth, InAttackPower) {}
+	Goblin() :Actor("고블린", 20.0f, 5.0f) {}
+	Goblin(const char* InName) :Actor(InName, 20.0f, 5.0f) {}
+	Goblin(const char* InName, float InHealth, float InAttackPower) : Actor(InName, InHealth, InAttackPower) {}
 
 	/// <summary>
 	/// Target에게 공격하는 함수
@@ -25,3 +24,4 @@ public:
 protected:
 	int DropGold = 10;
 };
+
